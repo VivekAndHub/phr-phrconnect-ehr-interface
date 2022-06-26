@@ -1,4 +1,4 @@
-name: Build and deploy .NET Core Function App to Azure functions app
+name: Build and deploy PHR Connect Azure Function to Dev
 on:
   push:
     branches:
