@@ -6,6 +6,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
+using Microsoft.ApplicationInsights;
 
 namespace Mdrx.PhrHubHub.PHR.PHRConnect.MessageFunction.Services
 {
@@ -20,7 +21,7 @@ namespace Mdrx.PhrHubHub.PHR.PHRConnect.MessageFunction.Services
         public int PollingTimeoutInSeconds { get; private set; }
 
         public X509Certificate2Collection ShieldCertificates { get; private set; }
-
+        
         /// <summary>
         /// Load environment variables
         /// </summary>
@@ -32,7 +33,7 @@ namespace Mdrx.PhrHubHub.PHR.PHRConnect.MessageFunction.Services
             this.BatchSizeLimit = this.Parse<Int32>(Environment.GetEnvironmentVariable("BatchSizeLimit"));
             this.PollingInterval = this.Parse<Int32>(Environment.GetEnvironmentVariable("PollingInterval"));
             this.TraceLimit = this.Parse<Int32>(Environment.GetEnvironmentVariable("TraceLimit"));
-            this.PollingInterval = this.Parse<Int32>(Environment.GetEnvironmentVariable("PollingTimeoutInSeconds"));
+            this.PollingInterval = this.Parse<Int32>(Environment.GetEnvironmentVariable("DefaultPollingTimeoutInSeconds"));
 
             //Load Shield Certificate
             //Get certificate from store
