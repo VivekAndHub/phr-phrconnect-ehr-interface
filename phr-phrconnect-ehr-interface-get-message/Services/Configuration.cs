@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
 using Microsoft.ApplicationInsights;
+using Microsoft.Extensions.Logging;
 
 namespace Mdrx.PhrHubHub.PHR.PHRConnect.MessageFunction.Services
 {
@@ -21,12 +22,14 @@ namespace Mdrx.PhrHubHub.PHR.PHRConnect.MessageFunction.Services
         public int PollingTimeoutInSeconds { get; private set; }
 
         public X509Certificate2Collection ShieldCertificates { get; private set; }
-        
+        ILogger<IConfiguration> Log;
         /// <summary>
         /// Load environment variables
         /// </summary>
-        public Configuration()
+        public Configuration(ILogger<IConfiguration> log)
         {
+            try
+            {
             this.ShieldThumbPrint = Environment.GetEnvironmentVariable("ShieldThumbPrint").Split(',');
             this.ShieldAllowedURIs = Environment.GetEnvironmentVariable("ShieldAllowedURIs").Split(',');
             this.IsProdEnv = this.Parse<Boolean>(Environment.GetEnvironmentVariable("IsProdEnv"));
@@ -34,7 +37,23 @@ namespace Mdrx.PhrHubHub.PHR.PHRConnect.MessageFunction.Services
             this.PollingInterval = this.Parse<Int32>(Environment.GetEnvironmentVariable("PollingInterval"));
             this.TraceLimit = this.Parse<Int32>(Environment.GetEnvironmentVariable("TraceLimit"));
             this.PollingInterval = this.Parse<Int32>(Environment.GetEnvironmentVariable("DefaultPollingTimeoutInSeconds"));
+            
+            
+            
+                
+            }
+            catch {
 
+                this.Log.LogError("Error in enviornment variable.");
+                this.Log.LogError(Environment.GetEnvironmentVariable("ShieldThumbPrint"));
+                this.Log.LogError(Environment.GetEnvironmentVariable("ShieldAllowedURIs"));
+                this.Log.LogError(Environment.GetEnvironmentVariable("IsProdEnv"));
+                this.Log.LogError(Environment.GetEnvironmentVariable("BatchSizeLimit"));
+                this.Log.LogError(Environment.GetEnvironmentVariable("PollingInterval"));
+                this.Log.LogError(Environment.GetEnvironmentVariable("TraceLimit"));
+                this.Log.LogError(Environment.GetEnvironmentVariable("DefaultPollingTimeoutInSeconds"));
+                throw new ArgumentException("Error in enviornment variable.");
+            }
             //Load Shield Certificate
             //Get certificate from store
             X509Certificate2Collection certificates = new X509Certificate2Collection();
@@ -68,7 +87,7 @@ namespace Mdrx.PhrHubHub.PHR.PHRConnect.MessageFunction.Services
             {
                 return (T)parser.ConvertFromString(value);
             }
-
+            Log.LogError("Unable to get parser fro the variable.");
             throw new ArgumentException("Unable to get parser fro the variable.");
         }
     }

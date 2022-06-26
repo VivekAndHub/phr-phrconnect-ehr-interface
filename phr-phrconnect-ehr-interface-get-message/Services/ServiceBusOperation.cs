@@ -20,8 +20,6 @@ namespace Mdrx.PhrHubHub.PHR.PHRConnect.MessageFunction.Services
     public class ServiceBusOperation : IServiceBusOperation
     {
 
-        Int32 BatchSizeLimit = Int32.Parse(Environment.GetEnvironmentVariable("BatchSizeLimit"));
-
         Microsoft.Extensions.Logging.ILogger Log;
         TelemetryConfiguration appInsightConfiguration;
         TelemetryClient TelemetryClient;
