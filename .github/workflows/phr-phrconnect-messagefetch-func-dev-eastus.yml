@@ -1,4 +1,4 @@
-name: Build and deploy PHR Connect Azure Function to Dev
+name: Build and deploy .NET Core Function App to Azure functions app
 on:
   push:
     branches:
@@ -28,5 +28,5 @@ jobs:
       uses: Azure/functions-action@v1
       with:
         app-name: ${{ env.AZURE_FUNCTIONAPP_NAME }}
-        publish-profile: ${{ secrets.phr_phrconnect_messagefetch_func_dev_eastus_1429 }}
+        publish-profile: ${{ secrets.phr_phrconnect_messagefetch_func_dev_eastus_d4d1 }}
         package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
