@@ -1,4 +1,4 @@
-name: Build and deploy .NET Core Function App to Azure functions app
+name: Dev Deployment
 on:
   push:
     branches:

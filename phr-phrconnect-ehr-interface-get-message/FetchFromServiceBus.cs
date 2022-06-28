@@ -40,6 +40,7 @@ namespace Mdrx.Hub.PHR.PHRConnect.MessageFunction
             
             InputDataModel requestBody = await this._serviceBusOperation.FetchBodyJson(req, log);
 
+            if(this._configuration.IsProdEnv)
             requestBody.TenantID = String.Empty;
 
             
