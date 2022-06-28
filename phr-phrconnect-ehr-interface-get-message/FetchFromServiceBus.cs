@@ -51,10 +51,11 @@ namespace Mdrx.Hub.PHR.PHRConnect.MessageFunction
                 SamlValidationResult validationResult = null;
                 foreach (var certificate in _configuration.ShieldCertificates)
                 {
-                    validationResult = _samlValidator.ValidateSamlToken(requestBody.ShieldToken, certificate, true, new TimeSpan(0, 0, 0));
+                    validationResult = _samlValidator.ValidateSamlToken(requestBody.ShieldToken, certificate, true, new TimeSpan(10, 0, 0));
                     if (validationResult.IsAllGood)
                     {
-                        requestBody.TenantID = validationResult.TenantID;
+                        if(this._configuration.IsProdEnv)
+                            requestBody.TenantID = validationResult.TenantID;
                         shieldValidationPassed = true;
                         break;
                     }
