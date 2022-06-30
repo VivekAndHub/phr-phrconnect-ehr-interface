@@ -25,6 +25,7 @@ namespace Mdrx.PhrHubHub.PHR.PHRConnect.MessageFunction.Services
         TelemetryClient TelemetryClient;
         EventTelemetry TraceEvent;
         IConfiguration Configuration;
+        
 
         public ServiceBusOperation(IConfiguration configuration)
         {
@@ -131,27 +132,27 @@ namespace Mdrx.PhrHubHub.PHR.PHRConnect.MessageFunction.Services
 
                 });
 
-                var pollingInterval = 0;
-                if (String.IsNullOrEmpty(Environment.GetEnvironmentVariable("PollingInterval")) ||
-                    !Int32.TryParse(Environment.GetEnvironmentVariable("PollingInterval"), out pollingInterval))
-                {
-                    var argException = new ArgumentException("Polling Interval is not an integer.");
+                //var pollingInterval = 0;
+                //if (String.IsNullOrEmpty(Environment.GetEnvironmentVariable("PollingInterval")) ||
+                //    !Int32.TryParse(Environment.GetEnvironmentVariable("PollingInterval"), out pollingInterval))
+                //{
+                //    var argException = new ArgumentException("Polling Interval is not an integer.");
 
-                    telemetryClient.TrackException(argException);
-                    telemetryClient.Flush();
-                    envelop.ErrorMessage = "Polling Interval is not an integer.";
-                    envelop.ErrorCode = 128;
-                    envelop.MessageCount = 0;
-                    envelop.Messages = responseMessageList;
-                    envelop.BatchSize = accumulatedBatchSize;
-                    return envelop;
-                }
+                //    telemetryClient.TrackException(argException);
+                //    telemetryClient.Flush();
+                //    envelop.ErrorMessage = "Polling Interval is not an integer.";
+                //    envelop.ErrorCode = 128;
+                //    envelop.MessageCount = 0;
+                //    envelop.Messages = responseMessageList;
+                //    envelop.BatchSize = accumulatedBatchSize;
+                //    return envelop;
+                //}
                 traceEvent.Properties.Add("StartPollingServiceBus", stopwatch.ElapsedMilliseconds.ToString());
                 //Batching message
                 while (true)
                 {
 
-                    var message = await queueReceiver.ReceiveMessageAsync(TimeSpan.FromMilliseconds(pollingInterval));
+                    var message = await queueReceiver.ReceiveMessageAsync(TimeSpan.FromMilliseconds(this.Configuration.PollingInterval));
                     if (message == null)
                     {
 
@@ -163,7 +164,7 @@ namespace Mdrx.PhrHubHub.PHR.PHRConnect.MessageFunction.Services
                         deletedPHRConnectIDs.Add(message.MessageId.ToLower());
                         continue;
                     }
-                    if ((input.StartTime - DateTime.UtcNow).TotalSeconds > (input.PollingTimeoutInSeconds * 0.85))
+                    if ((input.StartTime - DateTime.UtcNow).TotalSeconds > (this.Configuration.PollingTimeoutInSeconds * 0.85))
                         break;
 
 

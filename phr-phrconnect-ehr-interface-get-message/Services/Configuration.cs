@@ -36,7 +36,7 @@ namespace Mdrx.PhrHubHub.PHR.PHRConnect.MessageFunction.Services
             this.BatchSizeLimit = this.Parse<Int32>(Environment.GetEnvironmentVariable("BatchSizeLimit"));
             this.PollingInterval = this.Parse<Int32>(Environment.GetEnvironmentVariable("PollingInterval"));
             this.TraceLimit = this.Parse<Int32>(Environment.GetEnvironmentVariable("TraceLimit"));
-            this.PollingInterval = this.Parse<Int32>(Environment.GetEnvironmentVariable("DefaultPollingTimeoutInSeconds"));
+            this.PollingTimeoutInSeconds = this.Parse<Int32>(Environment.GetEnvironmentVariable("DefaultPollingTimeoutInSeconds"));
             
             
             

@@ -98,8 +98,9 @@ namespace Mdrx.Hub.PHR.PHRConnect.MessageFunction
                         ErrorMessage = "Token validation failure.",
                     });
                 }
-                
+
             }
+            
 
             //If verbose is set log all information
 
